@@ -2,14 +2,28 @@ import React from 'react';
 import { DrawerNavigator, StackNavigator } from 'react-navigation';
 import { Image } from 'react-native';
 
-import { HomeScreen } from './home';
-import { ProfileScreen } from './profile';
+import { HomeScreen, ProfileScreen } from './views';
 import { palette, logo } from './styles';
+import { Drawer } from './components';
 
-const RouteStack = StackNavigator({
-  Home: { screen: HomeScreen },
-  Profile: { screen: ProfileScreen },
-}, {
+const paths = {
+  Home: {
+    screen: HomeScreen,
+    path: 'home',
+    navigationOptions: () => ({
+      title: "Home",
+    }),
+  },
+  Profile: {
+    screen: ProfileScreen,
+    path: 'profile',
+    navigationOptions: () => ({
+      title: "Profile",
+    }),
+  },
+};
+
+const RouteStack = StackNavigator(paths, {
   navigationOptions: {
     initialRouteName: 'Home',
     headerStyle: { backgroundColor: palette.primary },
@@ -21,7 +35,14 @@ const RouteStack = StackNavigator({
 });
 
 const App = DrawerNavigator({
-  App: { screen: RouteStack },
+  StuffAndThings: {
+    screen: RouteStack,
+    navigationOptions: () => ({
+      title: "Stuff and Things",
+    }),
+  },
+}, {
+  contentComponent: props => <Drawer routes={paths} {...props} />,
 });
 
 export default App;
